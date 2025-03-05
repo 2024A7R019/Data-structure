@@ -1,0 +1,109 @@
+//WAP to make a list and perform operations on it
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX_SIZE 100    // pre processor directive (macros)
+void insert(int *list, int *size){
+	int pos, value, i;
+	printf("Enter Position : ");
+	scanf("%d", &pos);
+	printf("Enter Value : ");
+	scanf("%d", &value);
+	pos--;
+	if(pos<0 || pos>=*size)
+		printf("Invalid position !!!!!!\n");
+	else{
+		for(i=*size; i>pos; i--){
+			list[i] = list[i-1];
+		}
+		list[pos] = value;
+		(*size)++;
+		printf("Element inserted !!!!\n");
+	}
+}
+void displayList(int *list, int size){
+	if(size == 0){
+		printf("List is empty !!!!\n");
+	}
+	else{
+		int i;
+		printf("List elements are : \n");
+		for(i=0; i<size; i++){
+			printf("%d ", list[i]);
+		}	
+	}
+}
+void delete(int *list, int *size){
+	int pos, i;
+	printf("Enter Position : ");
+	scanf("%d", &pos);
+	pos--;
+	if(pos<0 || pos >= *size)
+		printf("Invalid position !!!!!!\n");
+	else{
+		for(i=pos; i<*size-1; i++){
+			list[i]=list[i+1];
+		}
+		(*size)--;
+		printf("Element Deleted !!!!!\n");
+	}
+}
+void search(int *list, int size){
+	if(size == 0){
+		printf("List is empty !!!\n");
+	}
+	else{
+		int i, value, flag=0;
+		printf("Enter searching element : ");
+		scanf("%d", &value);
+		for(i=0; i<size; i++){
+			if(list[i]==value){
+				flag = 1;
+				break;
+			}
+		}
+		if(flag == 1)
+			printf("Element found !!!!\n");
+		else
+			printf("Not Found !!!!!\n");	
+	}
+}
+int main(){
+	int list[MAX_SIZE], size, i;        //size is the actual no. of elements in the list
+	printf("Enter list Size : ");
+	scanf("%d", &size);
+	printf("Enter list elements : ");
+	for(i=0; i<size; i++){
+		scanf("%d", &list[i]);
+	}
+	while(1){
+		printf("1. Insertion \n");
+		printf("2. Deletion \n");
+		printf("3. Searching \n");
+		printf("4. Traversing \n");
+		printf("5. Exit \n");
+		int choice;
+		printf("Enter Choice : ");
+		scanf("%d", &choice);
+		switch(choice){
+			case 1:
+				insert(list, &size);
+				break;
+			case 2:
+				delete(list, &size);
+				break;
+			case 3:
+				search(list, size);
+				break;
+			case 4:
+				displayList(list, size);
+				break;
+			case 5:
+				exit(0);
+			default:
+				printf("Invalid choice !!!!!!\n");
+		}
+		printf("\n");
+		system("pause");
+	}
+	return 0;
+}
