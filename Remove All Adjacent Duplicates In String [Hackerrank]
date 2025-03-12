@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+int main(){
+    char str[10000];
+    scanf("%[^\n]s",str);
+    int len = strlen(str),top = -1;
+    char stack[len+1];
+    for(int i=0;i<len;i++)
+    {
+        char ch = str[i];
+        if(top == -1 || stack[top] != ch)
+        {
+            stack[++top]=ch;
+        }
+        else
+        {
+            top--;
+        }
+    }
+    stack[top+1]='\0';
+    printf("%s",stack);
+    return 0;
+}
