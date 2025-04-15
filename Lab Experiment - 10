@@ -1,0 +1,113 @@
+//WAP to implement stack using linked list
+#include<stdio.h>
+#include<stdlib.h>
+#include<limits.h>
+typedef struct node
+{
+    int data;
+    struct node *next;
+}Node;
+Node* top = NULL;
+void push(int ele)
+{
+    Node* temp = (Node*)malloc(sizeof(Node));
+    if (temp == NULL)
+    {
+        printf("Stack Overflow !!!\n");
+    }
+    temp -> data = ele;
+    temp -> next = top;
+    top = temp;
+    printf("Pushed %d into the stack\n",ele);
+}
+int pop()
+{
+    if (top == NULL)
+    {
+        printf("Stack Underflow !!!\n");
+        return INT_MIN;
+    }
+    else
+    {
+        Node *temp = top;
+        top = top -> next;
+        int val = temp -> data;
+        free(temp);
+        return val;
+    }
+}
+int peek()
+{
+    if (top == NULL)
+    {
+        printf("Stack is empty !!!\n");
+        return INT_MIN;
+    }
+    else
+    {
+        return (top -> data);
+    }
+}
+void show()
+{
+    if (top == NULL)
+    {
+        printf("Stack is empty !!!\n");
+    }
+    else
+    {
+        printf("Stack elements are = \n");
+        Node* temp = top;
+        while (temp != NULL)
+        {
+            printf("%d ",temp -> data);
+            temp = temp -> next;
+        }
+        printf("\n");
+    }
+}
+int main(){
+	while(1)
+    {
+		printf("1. Push\n");
+		printf("2. Pop\n");
+		printf("3. Peek\n");
+		printf("4. Show\n");
+		printf("5. Exit\n");
+		int choice,val,result;
+		printf("Enter choice : ");
+		scanf("%d", &choice);
+		switch(choice){
+			case 1:
+                printf("Enter value = ");
+                scanf("%d",&val);
+                push(val);
+				break;
+			case 2:
+				result = pop();
+                if (result != INT_MIN)
+                {
+                    printf("%d is poped from stack\n",result);
+                }
+				break;
+			case 3:
+                result = peek();
+                if (result != INT_MIN)
+                {
+                printf("Top element of stack is %d\n",result);
+                }
+				break;
+			case 4:
+				show();
+				break;
+			case 5:
+				exit(0);
+				break;
+			default:
+				printf("Invalid choice !!!!!\n");	
+		}
+		printf("\n\n");
+		system("pause");
+	}
+	return 0;
+}
