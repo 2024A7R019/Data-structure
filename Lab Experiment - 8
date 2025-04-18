@@ -19,7 +19,7 @@ struct node *CreateNode(int ele)
 void insertNodeInBeg(int ele)
 {
     struct node* NewNode = CreateNode(ele);
-    if (Head = NULL)
+    if (Head == NULL)
     {
         Head = NewNode;
     }
