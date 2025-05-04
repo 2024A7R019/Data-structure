@@ -1,0 +1,145 @@
+//WAP to implement binary search tree using linked list 
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode {
+    int data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+struct TreeNode* createNode(int value) {
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->data = value;
+    node->left = node->right = NULL;
+    return node;
+}
+
+struct TreeNode* insert(struct TreeNode* root, int value) {
+    if (root == NULL)
+        return createNode(value);
+    else if (value < root->data)
+        root->left = insert(root->left, value);
+    else if (value > root->data)
+        root->right = insert(root->right, value);
+    return root;
+}
+
+void preorder(struct TreeNode* root) {
+    if (root == NULL)
+        return;
+    printf("%d ", root->data);
+    preorder(root->left);
+    preorder(root->right);
+}
+
+void inorder(struct TreeNode* root) {
+    if (root == NULL)
+        return;
+    inorder(root->left);
+    printf("%d ", root->data);
+    inorder(root->right);
+}
+
+void postorder(struct TreeNode* root) {
+    if (root == NULL)
+        return;
+    postorder(root->left);
+    postorder(root->right);
+    printf("%d ", root->data);
+}
+
+struct TreeNode* search(struct TreeNode* root, int value) {
+    if (root == NULL || root->data == value)
+        return root;
+    else if (value < root->data)
+        return search(root->left, value);
+    else
+        return search(root->right, value);
+}
+
+struct TreeNode* findMin(struct TreeNode* root) {
+    while (root->left != NULL)
+        root = root->left;
+    return root;
+}
+
+struct TreeNode* delete(struct TreeNode* root, int value) {
+    if (root == NULL)
+        return NULL;
+    else if (value < root->data)
+        root->left = delete(root->left, value);
+    else if (value > root->data)
+        root->right = delete(root->right, value);
+    else {
+        if (root->left == NULL && root->right == NULL) {
+            free(root);
+            return NULL;
+        } else if (root->left == NULL) {
+            struct TreeNode* temp = root->right;
+            free(root);
+            return temp;
+        } else if (root->right == NULL) {
+            struct TreeNode* temp = root->left;
+            free(root);
+            return temp;
+        } else {
+            struct TreeNode* temp = findMin(root->right);
+            root->data = temp->data;
+            root->right = delete(root->right, temp->data);
+        }
+    }
+    return root;
+}
+
+int main() {
+    struct TreeNode* root = NULL;
+    while (1) {
+        printf("\n1. Insert\n");
+        printf("2. Pre-order\n");
+        printf("3. In-order\n");
+        printf("4. Post-order\n");
+        printf("5. Search\n");
+        printf("6. Delete\n");
+        printf("7. Exit\n");
+
+        int choice, value;
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value: ");
+                scanf("%d", &value);
+                root = insert(root, value);
+                break;
+            case 2:
+                preorder(root);
+                break;
+            case 3:
+                inorder(root);
+                break;
+            case 4:
+                postorder(root);
+                break;
+            case 5:
+                printf("Enter value to search: ");
+                scanf("%d", &value);
+                if (search(root, value) == NULL)
+                    printf("Element NOT found!\n");
+                else
+                    printf("Element found!\n");
+                break;
+            case 6:
+                printf("Enter value to delete: ");
+                scanf("%d", &value);
+                root = delete(root, value);
+                printf("Element deleted!\n");
+                break;
+            case 7:
+                exit(0);
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+}
