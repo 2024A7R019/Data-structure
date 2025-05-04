@@ -1,0 +1,138 @@
+//WAP to implement binary tree using array
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX_SIZE 100
+int tree[MAX_SIZE];
+int size = 0;
+void init()
+{
+    for (int i = 0; i < MAX_SIZE; i++)
+    {
+        tree[i] = -1;
+    }
+}
+void insert(int n)
+{
+    //Level order insertion in binary tree 
+    printf("Enter the value of nodes = ");
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d",&tree[size++]);
+    }
+}
+void PreOrder(int root)
+{
+    if (tree[root] == -1)
+    {
+        return;
+    }
+    printf("%d ",tree[root]);
+    PreOrder(2*root+1); //Left child
+    PreOrder(2*root+2); //Right child
+}
+void InOrder(int root)
+{
+    if (tree[root] == -1)
+    {
+        return;
+    }
+    InOrder(2*root+1); //Left child
+    printf("%d ",tree[root]);
+    InOrder(2*root+2); //Right child
+}
+void PostOrder(int root)
+{
+    if (tree[root] == -1)
+    {
+        return;
+    }
+    PostOrder(2*root+1); //Left child
+    PostOrder(2*root+2); //Right child
+    printf("%d ",tree[root]);
+}
+int search(int target)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (target == tree[i])
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+void delete(int value)
+{
+    int i = search(value);
+    if (i == -1)
+    {
+        printf("Element not found !!!\n");
+    }
+    else
+    {
+        tree[i] == tree[size-1];
+        tree[size-1] = -1;
+        size--;
+        printf("Element deleted !!!\n");
+    }
+}
+int main(){
+    int n,value,result,choice;
+    init();
+    while (1)
+    {
+        printf("1. Insert\n");
+        printf("2. Delete\n");
+        printf("3. Pre-Order display\n");
+        printf("4. In-Order display\n");
+        printf("5. Post-Order display\n");
+        printf("6. Search\n");
+        printf("7. Exit\n");
+        printf("Enter choice = ");
+        scanf("%d",&choice);
+        switch (choice)
+        {
+        case 1:
+            printf("Enter the value of n = ");
+            scanf("%d",&n);
+            insert(n);
+            break;
+        case 2:
+            printf("Enter value = ");
+            scanf("%d",&value);
+            delete(value);
+            break;
+        case 3:
+            PreOrder(0);
+            break;
+        case 4:
+            InOrder(0);
+            break;
+        case 5:
+            PostOrder(0);
+            break;
+        case 6:
+            printf("Enter value = ");
+            scanf("%d",&value);
+            result = search(value);
+            if (result != -1)
+            {
+                printf("Found !!!\n");
+            }
+            else
+            {
+                printf("Not Found !!!\n");
+            }
+            break;
+        case 7:
+            exit(0);
+            break;
+        default:
+            printf("Invalid choice !!!\n");
+            break;
+        }
+        printf("\n\n");
+        system("pause");
+    }
+    return 0;
+}
