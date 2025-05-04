@@ -1,0 +1,201 @@
+// lab experiment 15
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode {
+
+    struct TreeNode* left;
+    int data;
+    struct TreeNode* right;
+};
+struct TreeNode* createNode(int value) {
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->data = value;
+    node->left = node->right = NULL;
+    return node;
+}
+struct TreeNode* insert(struct TreeNode* root, int value) {
+    if (root == NULL) {
+        return createNode(value);
+    }
+    else{
+        struct TreeNode* queue[100];
+        int front = 0, rear = 0;
+        queue[rear++] = root;
+        while (front != rear) {
+            struct TreeNode* temp = queue[front++];
+            if (temp->left == NULL) {
+                temp->left = createNode(value);
+                return root;
+            } 
+            else if(temp->right == NULL) {
+                temp->right = createNode(value);
+                break;
+            } 
+            else {
+                queue[rear++] = temp->left;
+                queue[rear++] = temp->right;
+            }
+        }
+    }
+    return root;
+}
+void preorder(struct TreeNode* root) {
+    if (root == NULL) {
+        return;
+    }
+    printf("%d ", root->data);
+    preorder(root->left);
+    preorder(root->right);
+}
+void inorder(struct TreeNode* root) {
+    if (root == NULL) {
+        return;
+    }
+    inorder(root->left);
+    printf("%d ", root->data);
+    inorder(root->right);
+}
+void postorder(struct TreeNode* root) {
+    if (root == NULL) {
+        return;
+    }
+    postorder(root->left);
+    postorder(root->right);
+    printf("%d ", root->data);
+}
+void levelorder(struct TreeNode* root){
+    struct TreeNode* queue[100];
+    int front = 0, rear = 0;
+    queue[rear++] = root;
+    while(front != rear){
+        struct TreeNode* temp = queue[front++];
+        printf("%d ", temp->data);
+        if(temp->left != NULL){
+            queue[rear++] = temp->left;
+        }
+        if(temp->right != NULL){
+            queue[rear++] = temp->right;
+        }
+    }
+}
+ struct TreeNode* search(struct TreeNode* root, int target) {
+    struct TreeNode* queue[100];
+    int front = 0, rear = 0;
+    queue[rear++] = root;
+    while(front != rear){
+        struct TreeNode* temp = queue[front++];
+        if(temp->data == target){
+            return temp;
+        }
+        else if(temp->left != NULL){
+            queue[rear++] = temp->left;
+        }
+        else if(temp->right != NULL){
+            queue[rear++] = temp->right;
+        }
+    }
+    return NULL;
+}
+struct TreeNode* finddeepest(struct TreeNode* root) {
+  if(root == NULL) {
+    return NULL;
+  }
+  else{
+    struct TreeNode* queue[100];
+    int front = 0, rear = 0;
+    queue[rear++] = root;
+    struct TreeNode* temp = NULL;
+    while(front != rear) {
+        temp = queue[front++];
+        if(temp->left != NULL) {
+            queue[rear++] = temp->left;
+        }
+        if(temp->right != NULL) {
+            queue[rear++] = temp->right;
+        }
+    }
+    int i= (rear-2)/2;
+    if(queue[i] -> left== temp){
+        queue[i]->left = NULL;
+    }
+    else {
+        queue[i]->right = NULL;
+    }
+    return temp;
+  }
+}
+void delete(struct TreeNode* root, int value) {
+    struct TreeNode* temp =search(root, value);;
+    if(temp == NULL) {
+        printf("Value %d not found in the tree.\n", value);
+        return;
+    }
+   else{
+    struct TreeNode* last = finddeepest(root);
+    temp->data = last->data;
+    printf("Element deleted");
+   }  
+}
+int main(){
+    struct TreeNode* root = NULL;
+    int choice, val;
+    while (1) {
+        printf("1. Insert\n");
+        printf("2. Preorder\n");
+        printf("3. Inorder\n");
+        printf("4. Postorder\n");
+        printf("5. Levelorder\n");
+        printf("6. Search\n");
+        printf("7. Delete\n");
+        printf("8. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &val);
+                root = insert(root, val);
+                break;
+            case 2:
+                printf("Preorder Traversal: ");
+                preorder(root);
+                printf("\n");
+                break;
+            case 3:
+                printf("Inorder Traversal: ");
+                inorder(root);
+                printf("\n");
+                break;
+            case 4:
+                printf("Postorder Traversal: ");
+                postorder(root);
+                printf("\n");
+                break;
+            case 5:
+                printf("Levelorder Traversal: ");
+                levelorder(root);
+                break;
+            case 6:
+                printf("Enter value to search: ");
+                scanf("%d", &val);
+                if(search(root, val) != NULL){
+                    printf("Value %d found in the tree.\n", val);}
+                    else{
+                    printf("Value %d not found in the tree.\n", val);
+                break;
+            case 7:
+                printf("Enter value to delete: ");
+                scanf("%d", &val);
+                delete(root, val);
+                break;    
+            case 8:
+                exit(0);
+                break;
+                default:
+                printf("Invalid choice! Please try again.\n");
+                break;  
+        }
+    }
+}
+}
